@@ -78,7 +78,8 @@ class Wanderer:
         s.dsrdtr = False
         s.timeout = 2
 
-        s.rts = True
+        s.rts = True  # Seems to use this one for extra power
+        s.dtr = False  # Not connected in original straight cable
 
         s.open()
 
