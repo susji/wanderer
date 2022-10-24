@@ -45,8 +45,8 @@ class Wanderer:
     FMT_TIME = "YYMMDDHHmmss"
 
     def _write(self, buf: bytes | str):
-        # Wanderer seems to be pretty pick when accepting writes. One character
-        # at a time seemed most robust based on my tests.
+        # Wanderer seems to be pretty picky when accepting writes. One
+        # character at a time seemed most robust based on my tests.
         if isinstance(buf, str):
             buf = buf.encode()
         debug(f"write: [{len(buf)}] {buf}")
@@ -103,7 +103,7 @@ class Wanderer:
 
     def _expect(self, what: bytes | str, extra: int = 0) -> bytes:
         if isinstance(what, str):
-            what = what.encode(("utf-8"))
+            what = what.encode("utf-8")
         debug(f"expect: {what}+{extra}")
         r = self._read(len(what) + extra)
         if r[: len(what)] != what:
@@ -157,14 +157,16 @@ class Wanderer:
         self._write(f"TL {hours:04}")
         self._expect("TL")
         # Sampling Period
-        # manual says this specifies "how often sensors are read",
+        #
+        # Manual says this specifies "how often sensors are read",
         # and can be between 1..10 sec.
+        #
         self._write(f"PS {period_sample:04}")
         self._expect("PS")
         # Store Period
-        # manual says this specifies
         #
-        # "how often Wanderer unit stores the sensor readings, or samples, to memory"
+        # Manual says this specifies "how often Wanderer unit stores the sensor
+        # readings, or samples, to memory"
         #
         # It also says that the Wanderer has memory for 6540 samples.
         #
@@ -172,21 +174,22 @@ class Wanderer:
         self._expect("PM")
         # Vibration/Temperature Resolution
         #
-        # manual says "Resolution" means the minimum relative deviation from previous
-        # sample that we record a new value. Resolution of 1 seems to have a special
-        # meaning of "no change is too small", but 2 means a minimum deviation of 2 %,
-        # 3 means 3 % etc. Temperature and vibration resolutions have identical logic.
+        # Manual says "Resolution" means the minimum relative deviation from
+        # previous sample that we record a new value. Resolution of 1 seems to
+        # have a special meaning of "no change is too small", but 2 means a
+        # minimum deviation of 2 %, 3 means 3 % etc. Temperature and vibration
+        # resolutions have identical logic.
         #
-        # In practice this means that larger values for resolution means we accept more
-        # variance in values before recording a new entry.
+        # In practice this means that larger values for resolution means we
+        # accept more variance in values before recording a new entry.
         #
         self._write(f"RE {res_vib:02X}{res_temp:02X}")
         self._expect("RE")
 
     def read(self) -> Measurement:
-        # If there's an ongoing measurement when we do a read, it will be stopped.
-        # Wanderer will maintain the measurement values until a new one is programmed
-        # or it loses power.
+        # If there's an ongoing measurement when we do a read, it will be
+        # stopped. Wanderer will maintain the measurement values until a new
+        # one is programmed or it loses power.
         debug("read")
         # ??
         self._write("EQ")
@@ -228,7 +231,7 @@ class Wanderer:
             raw_samples = self._read(5 * n + 1)[:-1]
             for i in range(0, len(raw_samples), 5):
                 slice = raw_samples[i : i + 5]
-                # XXX Time shift is probably more third byte by itself.
+                # XXX Time shift may also include more bytes.
                 one, two, three, raw_temp, raw_vib = unpack("<BBBBB", slice)
                 temp = Wanderer.transform_raw_temp(raw_temp)
                 vib = Wanderer.transform_raw_vib(raw_vib)
@@ -317,7 +320,7 @@ if __name__ == "__main__":
                             }
                         )
 
-        # It's beneficial to try reading battery level even if the information isn't
-        # interesting because it tells us that we're correctly parsing the serial stream
-        # from our Wanderer.
+        # It's beneficial to try reading battery level even if the information
+        # isn't interesting because it tells us that we're correctly parsing
+        # the serial stream from our Wanderer.
         print(f"Battery level: {k.battery()} %")
