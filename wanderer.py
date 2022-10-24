@@ -79,10 +79,8 @@ class Wanderer:
         s.timeout = 2
 
         s.rts = True
-        s.dtr = True
 
         s.open()
-        s.dtr = False
 
         self.s = s
         print("Reading NUL byte after init: ", self._read(1))
