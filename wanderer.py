@@ -11,7 +11,6 @@ from pendulum.datetime import DateTime
 from pendulum.duration import Duration
 
 DEBUG = os.getenv("DEBUG", True)
-PORT = os.getenv("PORT", "com1")
 
 
 class ResponseError(Exception):
@@ -44,6 +43,9 @@ class Measurement:
 class Wanderer:
     FMT_TIME = "YYMMDDHHmmss"
 
+    def __init__(self, port: str):
+        self.port = port
+
     def _write(self, buf: bytes | str):
         # Wanderer seems to be pretty picky when accepting writes. One
         # character at a time seemed most robust based on my tests.
@@ -61,12 +63,12 @@ class Wanderer:
             raise ResponseError(f"wanted {n} bytes, got {len(r)}")
         return r
 
-    def __enter__(self, port: str = PORT):
+    def __enter__(self):
         s = serial.Serial()
 
-        print(f"Connecting to port {port}...")
+        print(f"Connecting to port {self.port}...")
 
-        s.port = port
+        s.port = self.port
 
         s.baudrate = 9600
         s.bytesize = serial.EIGHTBITS
@@ -278,11 +280,14 @@ if __name__ == "__main__":
         type=str,
         help="When reading, store measurement data as CSV to this filepath",
     )
+    p.add_argument(
+        "--port", type=str, default="com1", help="Serial port to use with Wanderer"
+    )
     args = p.parse_args()
 
     mt = pendulum.duration(seconds=args.measure)
 
-    with Wanderer() as k:
+    with Wanderer(args.port) as k:
         sleep(0.5)
         print(f"Battery level: {k.battery()} %")
         print(f"Battery level: {k.battery()} %")
