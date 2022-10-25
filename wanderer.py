@@ -139,9 +139,10 @@ class Wanderer:
         res_vib: int,
     ):
         debug(
-            f"measure: start={start}, period_sample={period_sample}, period_store={period_store}"
+            f"measure: start={start}, measure={measure}\n"
+            + f"         period_sample={period_sample}, period_store={period_store}\n"
+            + f"         res_temp={res_temp}, res_vib={res_vib}"
         )
-        debug(f"         measure={measure}, res_temp={res_temp}, res_vib={res_vib}")
         # ??
         self._write("LN")
         self._expect("LN", extra=1)
@@ -199,7 +200,7 @@ class Wanderer:
         # ??
         self._write("AP")
         # ??
-        sw = self._expect("SW ", extra=4 + 1)
+        self._expect("SW ", extra=4 + 1)
         tc = Wanderer.time_parse(self._expect("TC ", extra=12 + 1)[3:-1])
         ts = Wanderer.time_parse(self._expect("TS ", extra=12 + 1)[3:-1])
         tl = pendulum.duration(hours=int(self._expect("TL ", extra=4 + 1)[3:-1]))
