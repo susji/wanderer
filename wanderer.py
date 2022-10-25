@@ -289,8 +289,7 @@ if __name__ == "__main__":
 
     with Wanderer(args.port) as k:
         sleep(0.5)
-        print(f"Battery level: {k.battery()} %")
-        print(f"Battery level: {k.battery()} %")
+        print(f"Battery level at start: {k.battery()} %")
 
         if args.measure:
             print("Programming a new measurement...")
@@ -328,4 +327,4 @@ if __name__ == "__main__":
         # It's beneficial to try reading battery level even if the information
         # isn't interesting because it tells us that we're correctly parsing
         # the serial stream from our Wanderer.
-        print(f"Battery level: {k.battery()} %")
+        print(f"Battery level at end: {k.battery()} %")
