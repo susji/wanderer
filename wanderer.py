@@ -232,17 +232,17 @@ class Wanderer:
         if n >= 1:
             raw_samples = self._read(5 * n + 1)[:-1]
             for i in range(0, len(raw_samples), 5):
-                slice = raw_samples[i : i + 5]
+                sample_slice = raw_samples[i : i + 5]
                 # XXX Time shift may also include more bytes.
-                one, time, raw_temp, raw_vib = unpack(">BHBB", slice)
+                one, unitless_time, raw_temp, raw_vib = unpack(">BHBB", sample_slice)
                 temp = Wanderer.transform_raw_temp(raw_temp)
                 vib = Wanderer.transform_raw_vib(raw_vib)
                 temps.append(temp)
                 vibs.append(vib)
-                print(f"{one:04} {time:08} {temp:04} {vib:04}")
+                print(f"{one:04} {unitless_time:08} {temp:04} {vib:04}")
                 samples.append(
                     Sample(
-                        time=tc + pendulum.duration(minutes=time),
+                        time=tc + pendulum.duration(seconds=unitless_time),
                         temp=temp,
                         vib=vib,
                     )
