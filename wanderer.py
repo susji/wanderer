@@ -10,7 +10,7 @@ import serial
 from pendulum.datetime import DateTime
 from pendulum.duration import Duration
 
-DEBUG = os.getenv("DEBUG", True)
+DEBUG = os.getenv("DEBUG", False)
 
 
 class ResponseError(Exception):
