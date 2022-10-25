@@ -101,7 +101,7 @@ class Wanderer:
     def time_parse(raw: str | bytes):
         if isinstance(raw, bytes):
             raw = raw.decode("utf-8")
-        return pendulum.from_format(raw, Wanderer.FMT_TIME)
+        return pendulum.from_format(raw, Wanderer.FMT_TIME, tz="local")
 
     def _expect(self, what: bytes | str, extra: int = 0) -> bytes:
         if isinstance(what, str):
