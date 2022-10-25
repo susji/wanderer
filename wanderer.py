@@ -274,7 +274,7 @@ if __name__ == "__main__":
     p.add_argument(
         "--period-store", type=int, default=1, help="Memory store period [s]"
     )
-    p.add_argument("--measure-secs", type=int, default=10, help="Time to measure [s]")
+    p.add_argument("--measure-hours", type=int, default=1, help="Time to measure [h]")
     p.add_argument(
         "--output-csv",
         type=str,
@@ -285,7 +285,7 @@ if __name__ == "__main__":
     )
     args = p.parse_args()
 
-    mt = pendulum.duration(seconds=args.measure_secs)
+    mt = pendulum.duration(hours=args.measure_hours)
 
     with Wanderer(args.port) as k:
         sleep(0.5)
