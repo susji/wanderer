@@ -51,7 +51,7 @@ class Wanderer:
         # character at a time seemed most robust based on my tests.
         if isinstance(buf, str):
             buf = buf.encode()
-        debug(f"write: [{len(buf)}] {buf}")
+        debug(f"write: [{len(buf)}] {buf!r}")
         for i in range(len(buf)):
             c = buf[i : i + 1]
             self.s.write(c)
@@ -106,10 +106,10 @@ class Wanderer:
     def _expect(self, what: bytes | str, extra: int = 0) -> bytes:
         if isinstance(what, str):
             what = what.encode("utf-8")
-        debug(f"expect: {what}+{extra}")
+        debug(f"expect: {what!r}+{extra}")
         r = self._read(len(what) + extra)
         if r[: len(what)] != what:
-            raise ResponseError(f"expecting {what}, got {r[:len(what)]}")
+            raise ResponseError(f"expecting {what!r}, got {r[:len(what)]!r}")
         return r
 
     @staticmethod
@@ -224,8 +224,8 @@ class Wanderer:
 
         s = int(vs[3 : 3 + 2])
         n = int(sn[3 : 3 + 4])
-        debug(f"read: vs={s} ({vs})")
-        debug(f"read: sn={n} ({sn})")
+        debug(f"read: vs={s} ({vs!r})")
+        debug(f"read: sn={n} ({sn!r})")
 
         samples = []
         temps = []
