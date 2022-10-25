@@ -37,6 +37,8 @@ def do_plot(df):
         label.set_rotation(30)
 
     fig.legend()
+    tsl = df["timestamp"].to_list()
+    plt.title(f"{tsl[0]} - {tsl[-1]}")
     plt.show()
 
 
