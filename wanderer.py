@@ -242,7 +242,7 @@ class Wanderer:
                 print(f"{one:04} {unitless_time:08} {temp:04} {vib:04}")
                 samples.append(
                     Sample(
-                        time=tc + pendulum.duration(seconds=unitless_time),
+                        time=tc + pendulum.duration(seconds=unitless_time * pm),
                         temp=temp,
                         vib=vib,
                     )
