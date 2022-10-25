@@ -285,7 +285,7 @@ if __name__ == "__main__":
     )
     args = p.parse_args()
 
-    mt = pendulum.duration(seconds=args.measure)
+    mt = pendulum.duration(seconds=args.measure_secs)
 
     with Wanderer(args.port) as k:
         sleep(0.5)
