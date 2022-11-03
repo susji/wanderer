@@ -1,11 +1,12 @@
 # wanderer
 
-We implement a simple control software for a device called Wanderer. It was
-also known by its Finnish translation Kulkuri. The device is a battery-operated
-and portable sensor device manufactured around 1991 by Elektrobit/Extrabit. The
-only unit I've seen measures ambient temperature and vibration as a function of
-time. The device came with a disk containing a control program meant for Windows
-2 and 3. The interesting parts of the original software are reimplemented here.
+We implement a simple control software and data plotter for a device called the
+Wanderer. It was also known by its Finnish translation Kulkuri. The device is a
+battery-operated and portable sensor device manufactured around 1991 by
+Elektrobit/Extrabit. The only unit I've seen measures ambient temperature and
+vibration as a function of time. The device came with a disk containing a
+control program meant for Windows 2 and 3. The interesting parts of the original
+software are reimplemented here.
 
 I haven't seen any technical documentation for this device and I'm not sure if
 it even exists at this point. I reverse engineered the serial protocol. There
